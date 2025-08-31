@@ -1,4 +1,4 @@
-import "../styles/home.css";
+import "../styles/tourCategories.css";
 
 const categories = [
     {
@@ -26,35 +26,13 @@ const categories = [
 export default function TourCategories() {
     return (
         <section className="categories-section position-relative" id="tour">
-            {/* floating decor */}
-            {/* <img
-                className="decor decor-camera d-none d-md-block"
-                src="https://cdn-icons-png.flaticon.com/512/685/685655.png"
-                alt=""
-            />
-            <img
-                className="decor decor-ticket d-none d-md-block"
-                src="https://cdn-icons-png.flaticon.com/512/3144/3144456.png"
-                alt=""
-            />
-            <img
-                className="decor decor-bottle d-none d-lg-block"
-                src="https://cdn-icons-png.flaticon.com/512/3076/3076403.png"
-                alt=""
-            />
-            <img
-                className="decor decor-palm d-none d-lg-block"
-                src="https://cdn-icons-png.flaticon.com/512/3038/3038074.png"
-                alt=""
-            /> */}
-
+      
             <div className="container">
                 <div className="text-center mb-4">
                     <div className="subtitle text-info">Wonderful place for You</div>
                     <h2 className="tc-title">Tour Categories</h2>
                 </div>
 
-                {/* 5 centered square cards */}
                 <div className="tc-row tc-stagger">
                     {categories.map((c) => (
                         <div className="tc-item" key={c.title}>

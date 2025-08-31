@@ -33,6 +33,13 @@ const countries = [
       "Japan is a perfect blend of ancient tradition and modern innovation, offering serene temples, futuristic cities, breathtaking cherry blossoms, and unique cultural experiences.",
     image:
       "https://images.unsplash.com/photo-1578469645742-46cae010e5d4?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8a3lvdG98ZW58MHx8MHx8fDA%3D",
+  },
+  {
+    name: "Greece",
+    description:
+      "Greece enchants visitors with its sun-kissed islands, ancient ruins, and rich mythology, offering stunning beaches, vibrant culture, delicious cuisine, and unforgettable historical sites.",
+    image:
+      "https://worldwildschooling.com/wp-content/uploads/2024/01/Small-Towns-in-Europe_Assos_Greece_SCStock_Adobe-Stock-Photo_427227583-1.jpg",
   }
   ,
 ];

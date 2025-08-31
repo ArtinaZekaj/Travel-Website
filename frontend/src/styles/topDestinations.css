@@ -1,0 +1,81 @@
+.td-section{
+  background:#dbe8f8;            
+}
+
+/* Inner width so 3-up cards are nicely wide on desktop */
+.td-wrap{
+  max-width: 1680px;            
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Optional subtitle gradient */
+.text-gradient{
+  background: linear-gradient(#ff8a1e);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color: transparent;
+}
+.dest-card {
+  border-radius: 1.5rem;   /* bigger rounding */
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0,0,0,.10);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.dest-media img {
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+
+
+.dest-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(0,0,0,.16);
+}
+
+/* Equal image height so rows line up */
+.dest-media{
+  height: 340px;                 /* 220–280 looks good for 3-up */
+  overflow: hidden;
+}
+@media (max-width: 991.98px){
+  .dest-media{ height: 220px; }
+}
+
+/* Rating pill on the image */
+.dest-badge{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border-radius: 999px;
+  padding: .35rem .6rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,.15);
+}
+
+/* Clamp blurb to keep heights tidy */
+.dest-blurb{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* CTA button */
+.dest-card .btn{
+  border-radius: .75rem;
+  font-weight: 600;
+  padding: .7rem 1.1rem;
+}
+
+.btn-orange {
+  background-color: #ffb566 !important;
+  border-color: #ffb566 !important;
+  color: #fff !important;
+}
+
+.btn-orange:hover {
+  background-color: #ffa94d !important;
+  border-color: #ffa94d !important;
+  color: #fff !important;
+}

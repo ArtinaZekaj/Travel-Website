@@ -50,7 +50,7 @@ body,
 .brand-title{ font-weight:700; color:#ff8a1e; font-size: 1.4rem; }
 .brand-sub{ font-size:.72rem; color:#d6d6d6; }
 
-/* center nav */
+
 .nav-center ul{ list-style:none; display:flex; gap:34px; margin:0; padding:0; }
 .nav-center li{ position:relative; font-weight:600; }
 .nav-center a{ color:#fff; text-decoration:none; opacity:.9; font-size: 1.3rem;}
@@ -61,7 +61,6 @@ body,
   background:#ff8a1e; border-radius:2px;
 }
 
-/* right: icons + CTA */
 .nav-right{ display:flex; align-items:center; gap:16px; }
 .icon-btn{
   background:transparent; border:none; color:#fff; font-size:1.05rem; cursor:pointer;
@@ -74,16 +73,13 @@ body,
 }
 .btn-signin:hover{ background:#e67612; }
 
-/* ensure hero content isn't hidden under the fixed header */
 .home-container{ padding-top: 72px; }
 
-/* ✅ Centered Content */
 .home-content {
   position: absolute;
   top: 50%;
   left: 7vw;
   transform: translateY(-50%);
-  /* centers vertically */
   z-index: 2;
   color: #fff;
   max-width: 720px;
@@ -116,16 +112,14 @@ body,
 }
 
 .btn-explore:hover {
-  background-color: #e67612; /* ngjyrë më e errët kur hover */
+  background-color: #e67612; 
 }
 
-/* ✅ Cards (centered vertically as well) */
 .cards-wrap {
   position: absolute;
   right: 24px;
   top: 60%;
   transform: translateY(-50%);
-  /* centers vertically */
   height: 620px;
   overflow: hidden;
   z-index: 3;
@@ -174,112 +168,3 @@ body,
   transform: translateY(-4px);
 }
 
-
-/* ===== =========================================Tour Categories Section ===== =============================
-==================================================                        ====================================*/
-.categories-section {
-  position: relative;
-  padding: 100px 0 300px;
-  overflow: hidden;
-}
-.categories-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("https://static.vecteezy.com/system/resources/thumbnails/030/659/262/small/minimalistic-desktop-background-high-quality-free-photo.jpg")
-              no-repeat center center/cover;
-  filter: blur(5px); 
-  z-index: -1; 
-}
-
-/* header */
-.subtitle{font-weight:900;font-size:1.7rem;margin-bottom:6px}
-.tc-title{font-weight:1000;font-size:4rem;}
-
-/* centered 5-card row */
-.tc-row{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-  gap:26px;
-  flex-wrap:wrap;                 /* wraps on small screens */
-}
-
-/* each item */
-.tc-item{
-  width:238px;                    /* card width */
-  text-align:center;
-  user-select:none;
-}
-
-.tc-imgWrap{
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 12px 30px rgba(0,0,0,.12);
-  transition:transform .2s ease, box-shadow .2s ease;
-}
-
-/* perfect square like in reference */
-.tc-img{
-  width:100%;
-  aspect-ratio:1/1;
-  object-fit:cover;
-  display:block;
-}
-
-.tc-item:hover .tc-imgWrap{
-  transform:translateY(-4px);
-  box-shadow:0 16px 36px rgba(218, 3, 3, 0.18);
-}
-
-.tc-caption{
-  margin-top:10px;
-  font-weight:700;
-  font-size: 1.3rem;
-}
-
-/* responsive tweaks */
-@media (max-width: 991px){
-  .tc-item{ width:160px; }
-}
-@media (max-width: 575px){
-  .tc-row{ gap:18px; }
-  .tc-item{ width:44vw; max-width:180px; }
-}
-/* Make the row a single centered line (wrap on small screens) */
-.tc-row {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 26px;
-  flex-wrap: wrap;
-}
-
-/* Base: each item can be offset vertically via a CSS var */
-.tc-item {
-  --offset: 0px;
-  transform: translateY(var(--offset));
-  transition: transform .25s ease;
-}
-
-/* ===== Staggered Tour Categories ===== */
-.tc-stagger .tc-item:nth-child(1) { transform: translateY(10px); }
-.tc-stagger .tc-item:nth-child(2) { transform: translateY(100px); }
-.tc-stagger .tc-item:nth-child(3) { transform: translateY(170px); }
-.tc-stagger .tc-item:nth-child(4) { transform: translateY(100px); }
-.tc-stagger .tc-item:nth-child(5) { transform: translateY(10px); }
-
-/* Smooth hover */
-.tc-stagger .tc-item:hover {
-  transform: translateY(-10px) scale(1.03);
-}
-
-/* On small screens keep them tidy */
-@media (max-width: 768px) {
-  .tc-stagger .tc-item {
-    transform: translateY(0) !important;
-  }
-}

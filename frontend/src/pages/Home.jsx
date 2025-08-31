@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import countries from "../data/countries";
 import "../styles/home.css";
 import TourCategories from "../pages/TourCategories";
+import "../styles/tourCategories.css";
+import TopDestinations from "../pages/TopDestinations";
+import "../styles/topDestinations.css";
 
-const CARD_W = 350;      // width of each card
-const CARD_H = 500;      // NEW: taller cards
+const CARD_W = 350;      
+const CARD_H = 500;      
 const GAP = 16;
 const VISIBLE = 3;
 const AUTOPLAY_MS = 5000;
@@ -13,28 +16,28 @@ export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
 
-  // autoplay every 3s
+  // autoplay
   useEffect(() => {
     const id = setInterval(() => {
-      setActiveIndex((p) => (p + 1) % countries.length);
-      setCardIndex((p) => (p + 1) % countries.length);
+      setActiveIndex((prev) => (prev + 1) % countries.length);
+      setCardIndex((prev) => (prev + 1) % countries.length);
     }, AUTOPLAY_MS);
+
     return () => clearInterval(id);
   }, []);
 
+  // vendi aktual
   const active = countries[activeIndex] ?? countries[0];
 
-  const trackStyle = useMemo(
-    () => ({
-      display: "flex",
-      gap: `${GAP}px`,
-      transform: `translateX(-${cardIndex * (CARD_W + GAP)}px)`,
-      transition: "transform .6s ease",
-      willChange: "transform",
-    }),
-    [cardIndex]
-  );
+  // carousel track style
+  const trackStyle = {
+    display: "flex",
+    gap: `${GAP}px`,
+    transform: `translateX(-${cardIndex * (CARD_W + GAP)}px)`,
+    transition: "transform .6s ease",
+  };
 
+  // klikimi mbi kartë
   const pick = (i) => {
     setActiveIndex(i);
     setCardIndex(i);
@@ -42,17 +45,16 @@ export default function Home() {
 
   return (
     <>
-      {/* Full-screen Hero */}
+      {/* Hero Background */}
       <div
         className="home-container"
         style={{ backgroundImage: `url(${active.image})` }}
       >
         <div className="home-overlay" />
 
-        {/* ✅ Header/NavBar */}
+        {/* Navbar */}
         <header className="custom-navbar">
           <div className="nav-left">
-            {/* use an <img> logo if you have it; text fallback shown */}
             <div className="nav-logo-box">
               <span className="nav-logo-dot" />
               <span className="nav-logo">AZ</span>
@@ -77,14 +79,15 @@ export default function Home() {
             <button className="btn-signin">Sign In</button>
           </div>
         </header>
-        {/* ✅ Centered Content */}
+
+        {/* Hero Content */}
         <div className="home-content">
           <h1 className="home-title">{active.name.toUpperCase()}</h1>
           <p className="home-desc">{active.description}</p>
           <button className="btn-explore">Explore</button>
         </div>
 
-        {/* ✅ Centered Card Carousel */}
+        {/* Card Carousel */}
         <div
           className="cards-wrap"
           style={{ width: VISIBLE * CARD_W + (VISIBLE - 1) * GAP }}
@@ -105,8 +108,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ✅ New Tour Categories Section */}
       <TourCategories />
+      <TopDestinations />
     </>
   );
 }
