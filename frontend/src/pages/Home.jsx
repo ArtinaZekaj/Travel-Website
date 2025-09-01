@@ -5,6 +5,8 @@ import TourCategories from "../pages/TourCategories";
 import "../styles/tourCategories.css";
 import TopDestinations from "../pages/TopDestinations";
 import "../styles/topDestinations.css";
+import OffersSection from "../pages/OffersSection";
+import "../styles/offersSection.css";
 
 const CARD_W = 350;      
 const CARD_H = 500;      
@@ -110,6 +112,7 @@ export default function Home() {
 
       <TourCategories />
       <TopDestinations />
+      <OffersSection />
     </>
   );
 }

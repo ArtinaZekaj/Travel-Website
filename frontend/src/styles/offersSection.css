@@ -1,0 +1,246 @@
+.offers-section {
+  position: relative;
+  background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e") no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/* Krijon një layer mbi background */
+.offers-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  /* merr foton nga prindi */
+  filter: blur(6px);
+  /* bluri i fotos */
+  transform: scale(1.1);
+  /* që të mos shfaqen skajet */
+  z-index: 0;
+}
+
+/* përmbajtja brenda seksionit */
+.offers-section>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make sure rotated cards are not clipped */
+.offers-row {
+  overflow: visible;
+}
+
+.container.overflow-visible {
+  overflow: visible;
+}
+
+/* Card shell */
+.offer-card {
+  background: transparent;
+  border-radius: 22px;
+  box-shadow: 0 22px 42px rgba(0, 0, 0, .14);
+  transition: transform .28s ease, box-shadow .28s ease, rotate .28s ease, z-index .28s ease, filter .28s ease;
+}
+
+/* Poster proportions */
+.offer-frame {
+  aspect-ratio: 4/5;
+  border-radius: 22px;
+  position: relative;
+}
+
+/* Image fill */
+.offer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 22px;
+}
+
+/* very soft vignette for readability (no heavy dark/blur) */
+.offer-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .28) 0%, rgba(0, 0, 0, .0) 55%);
+  pointer-events: none;
+}
+
+/* ===== Top badges ===== */
+.badge-stack {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 2;
+}
+
+.chip {
+  font-size: .75rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  /* backdrop-filter: blur(4px); */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+}
+
+.chip-yellow {
+  background: #ffd24d;
+  color: #1a1a1a;
+}
+
+.chip-dark {
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+}
+
+/* wishlist */
+.icon-btn.wish {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, .92);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  color: #ff4d6d;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+  cursor: pointer;
+}
+
+.icon-btn.wish:hover {
+  filter: brightness(.95);
+}
+
+/* ===== Bottom info bar (full width, keeps info visible) ===== */
+.info-bar {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(20, 20, 20, .66);
+  color: #fff;
+  /* backdrop-filter: blur(6px); */
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .20);
+}
+
+.ib-left {
+  min-width: 0;
+}
+
+.ib-title {
+  font-weight: 800;
+  letter-spacing: .2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ib-meta {
+  margin-top: 1px;
+  font-size: .85rem;
+  opacity: .9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* CTA on the right */
+.ib-cta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: none;
+  background: #ffd24d;
+  color: #111;
+  font-weight: 800;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.ib-cta:hover {
+  filter: brightness(.97);
+}
+
+.ib-arrow {
+  font-size: 18px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+@media (min-width: 992px) {
+  .offer-card:not(.tilt-left):not(.tilt-right) {
+    transform: translateY(-6px) scale(1.05);
+    z-index: 3;
+  }
+
+  .offer-card.tilt-left {
+    rotate: -8deg;
+    transform: translateY(18px) scale(.95);
+    margin-right: -72px;
+    z-index: 1;
+    filter: none;
+    /* ← remove blur/desaturation */
+  }
+
+  .offer-card.tilt-right {
+    rotate: 8deg;
+    transform: translateY(18px) scale(.95);
+    margin-left: -72px;
+    z-index: 1;
+    filter: none;
+    /* ← remove blur/desaturation */
+  }
+
+  .offer-card:hover {
+    rotate: 0deg;
+    transform: translateY(-10px) scale(1.03);
+    z-index: 4;
+    box-shadow: 0 28px 56px rgba(0, 0, 0, .22);
+    filter: none;
+    /* ensure no blur on hover either */
+  }
+}
+.handpicked-title {
+  font-size: 1.3rem; /* pak më e madhe se default */
+  color: #ff8a1e !important; /* ngjyra portokalli e butë */
+  font-weight: 600;
+}
+
+.special-title {
+  font-size: 2.5rem; /* më e madhe */
+  color: #000000 !important; /* e bardhë */
+  font-weight: bold;
+}
+/* Mobile/tablet: no tilt */
+@media (max-width: 991.98px) {
+
+  .offer-card,
+  .offer-card.tilt-left,
+  .offer-card.tilt-right {
+    rotate: 0;
+    transform: none;
+    margin: 0;
+    filter: none;
+  }
+}
