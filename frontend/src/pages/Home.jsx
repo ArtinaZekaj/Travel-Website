@@ -7,6 +7,10 @@ import TopDestinations from "../pages/TopDestinations";
 import "../styles/topDestinations.css";
 import OffersSection from "../pages/OffersSection";
 import "../styles/offersSection.css";
+import Footer from "../pages/footer";
+import "../styles/footer.css";
+import WhyChooseUs from "../pages/WhyChooseUs";
+import "../styles/whyChooseUs.css";
 
 const CARD_W = 350;      
 const CARD_H = 500;      
@@ -68,10 +72,11 @@ export default function Home() {
 
           <nav className="nav-center">
             <ul>
-              <li className="active"><a href="#destinations">Destinations</a></li>
-              <li><a href="#experiences">Experiences</a></li>
-              <li><a href="#journal">Journal</a></li>
+              <li className="active"><a href="#home">Home</a></li>
+              <li><a href="#categories">Categories</a></li>
+              <li><a href="#destinations">Destinations</a></li>
               <li><a href="#about">About</a></li>
+              <li><a href="#fffers">Offers</a></li>
             </ul>
           </nav>
 
@@ -112,7 +117,9 @@ export default function Home() {
 
       <TourCategories />
       <TopDestinations />
+      <WhyChooseUs />
       <OffersSection />
+      <Footer />
     </>
   );
 }
