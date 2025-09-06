@@ -11,9 +11,10 @@ import Footer from "../pages/footer";
 import "../styles/footer.css";
 import WhyChooseUs from "../pages/WhyChooseUs";
 import "../styles/whyChooseUs.css";
+import { Link } from "react-router-dom";
 
-const CARD_W = 350;      
-const CARD_H = 500;      
+const CARD_W = 350;
+const CARD_H = 500;
 const GAP = 16;
 const VISIBLE = 3;
 const AUTOPLAY_MS = 5000;
@@ -58,34 +59,6 @@ export default function Home() {
       >
         <div className="home-overlay" />
 
-        {/* Navbar */}
-        <header className="custom-navbar">
-          <div className="nav-left">
-            <div className="nav-logo-box">
-              <span className="nav-logo-dot" />
-              <span className="nav-logo">AZ</span>
-            </div>
-            <div className="brand-text">
-              <span className="brand-title">TravelWebsite</span>
-            </div>
-          </div>
-
-          <nav className="nav-center">
-            <ul>
-              <li className="active"><a href="#home">Home</a></li>
-              <li><a href="#categories">Categories</a></li>
-              <li><a href="#destinations">Destinations</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#fffers">Offers</a></li>
-            </ul>
-          </nav>
-
-          <div className="nav-right">
-            <button className="icon-btn" aria-label="Search">🔍</button>
-            <button className="icon-btn" aria-label="Language">🌐</button>
-            <button className="btn-signin">Sign In</button>
-          </div>
-        </header>
 
         {/* Hero Content */}
         <div className="home-content">
@@ -120,6 +93,11 @@ export default function Home() {
       <WhyChooseUs />
       <OffersSection />
       <Footer />
+      <Link to="/categories/adventure-tours">Adventure Tours</Link>
+      <Link to="/categories/cultural-tours">Cultural Tours</Link>
+      <Link to="/categories/beach-getaways">Beach Getaways</Link>
+      <Link to="/categories/luxury-escapes">Luxury Escapes</Link>
+      <Link to="/categories/family-vacations">Family Vacations</Link>
     </>
   );
 }
