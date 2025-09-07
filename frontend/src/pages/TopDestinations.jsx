@@ -1,4 +1,6 @@
 import "../styles/topDestinations.css";
+import { Link } from "react-router-dom";
+// import destinations from "../data/destinations";
 
 const destinations = [
     {
@@ -113,9 +115,13 @@ export default function TopDestinationsWide() {
 
                                     <p className="text-secondary mb-3 dest-blurb">{d.blurb}</p>
 
-                                    <button className="btn btn-orange w-100 rounded-3 mt-auto">
+                                    <Link
+                                        to={`/destination/${d.code}`}
+                                        className="btn btn-orange w-100 rounded-3 mt-auto"
+                                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                                    >
                                         Explore Destination <i className="bi bi-arrow-right ms-2" />
-                                    </button>
+                                    </Link>
                                 </div>
                             </article>
                         </div>

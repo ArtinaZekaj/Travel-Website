@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./pages/Header";
 import CategoryPage from "./pages/CategoryPage";
+import DestinationPage from "./pages/DestinationPage";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
 
         {/* Rruga për secilën kategori */}
         <Route path="/categories/:slug" element={<CategoryPage />} />
+        <Route path="/destination/:code" element={<DestinationPage />} />
       </Routes>
     </Router>
   );
