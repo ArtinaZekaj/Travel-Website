@@ -11,17 +11,19 @@ import Footer from "../pages/footer";
 import "../styles/footer.css";
 import WhyChooseUs from "../pages/WhyChooseUs";
 import "../styles/whyChooseUs.css";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CARD_W = 350;
 const CARD_H = 500;
 const GAP = 16;
-const VISIBLE = 3;
-const AUTOPLAY_MS = 5000;
+const VISIBLE = 3;  
+const AUTOPLAY_MS = 2000;
 
 export default function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
+  const navigate = useNavigate();
 
   // autoplay
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function Home() {
     return () => clearInterval(id);
   }, []);
 
-  // vendi aktual
+  
   const active = countries[activeIndex] ?? countries[0];
 
   // carousel track style
@@ -54,6 +56,7 @@ export default function Home() {
     <>
       {/* Hero Background */}
       <div
+        id="home"
         className="home-container"
         style={{ backgroundImage: `url(${active.image})` }}
       >
@@ -64,7 +67,12 @@ export default function Home() {
         <div className="home-content">
           <h1 className="home-title">{active.name.toUpperCase()}</h1>
           <p className="home-desc">{active.description}</p>
-          <button className="btn-explore">Explore</button>
+          <button
+            className="btn-explore"
+            onClick={() => navigate(`/destination/${active.code}`)}
+          >
+            Explore
+          </button>
         </div>
 
         {/* Card Carousel */}
@@ -93,11 +101,11 @@ export default function Home() {
       <WhyChooseUs />
       <OffersSection />
       <Footer />
-      <Link to="/categories/adventure-tours">Adventure Tours</Link>
+      {/* <Link to="/categories/adventure-tours">Adventure Tours</Link>
       <Link to="/categories/cultural-tours">Cultural Tours</Link>
       <Link to="/categories/beach-getaways">Beach Getaways</Link>
       <Link to="/categories/luxury-escapes">Luxury Escapes</Link>
-      <Link to="/categories/family-vacations">Family Vacations</Link>
+      <Link to="/categories/family-vacations">Family Vacations</Link> */}
     </>
   );
 }

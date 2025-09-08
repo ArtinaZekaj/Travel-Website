@@ -1,6 +1,6 @@
 import "../styles/topDestinations.css";
 import { Link } from "react-router-dom";
-// import destinations from "../data/destinations";
+
 
 const destinations = [
     {

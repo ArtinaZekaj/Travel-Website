@@ -36,7 +36,7 @@ export default function TourCategories() {
 
             <div className="container">
                 <div className="text-center mb-4">
-                    <div className="subtitle text-info">Wonderful place for You</div>
+                    <div className="subtitle">Wonderful place for You</div>
                     <h2 className="tc-title">Tour Categories</h2>
                 </div>
 

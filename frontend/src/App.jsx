@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Header from "./pages/Header";
 import CategoryPage from "./pages/CategoryPage";
 import DestinationPage from "./pages/DestinationPage";
+import OfferDetailPage from "./pages/OfferDetailPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         {/* Rruga për secilën kategori */}
         <Route path="/categories/:slug" element={<CategoryPage />} />
         <Route path="/destination/:code" element={<DestinationPage />} />
+        <Route path="/offers/:slug" element={<OfferDetailPage />} />
       </Routes>
     </Router>
   );

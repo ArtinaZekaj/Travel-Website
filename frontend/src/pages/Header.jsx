@@ -17,15 +17,11 @@ export default function Header() {
 
       <nav className="nav-center">
         <ul>
-          {/* Home -> faqja / */}
-          <li className="active">
-            <Link to="/">Home</Link>
-          </li>
-
-          {/* Këto i lë si anchor te Home; nga Category do të të çojnë në Home me hash */}
-          <li><a href="/#categories">Categories</a></li>
-          <li><a href="/#destinations">Destinations</a></li>
-          <li><a href="/#about">About</a></li>
+          {/* Këta janë anchor links që të çojnë te seksionet në Home */}
+          <li className="active"><a href="/#home">Home</a></li>
+          <li><a href="/#tour">Categories</a></li>
+          <li><a href="/#top-destinations">Destinations</a></li>
+          <li><a href="/#why-us">About</a></li>
           <li><a href="/#offers">Offers</a></li>
         </ul>
       </nav>

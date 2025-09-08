@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../styles/offersSection.css";
 
 const defaultDeals = [
   {
     id: 1,
     title: "Italy",
+    slug: "italy",
     image:
       "https://www.yesmilano.it/sites/default/files/styles/testata_full/public/pagina_standard/copertina/181/196/Depositphotos_150847914_xl-2015_duomo_di_milano_copertina.jpg?itok=RxNexRMO",
     activities: 8,
@@ -13,11 +15,12 @@ const defaultDeals = [
     badge: "-20%",
     rating: 4.7,
   },
-
   {
     id: 2,
     title: "Greece",
-    image: "https://static.prod.r53.tablethotels.com/media/ecs/global/michelin-articles/Missing/Lead-Zante.jpg",
+    slug: "greece",
+    image:
+      "https://static.prod.r53.tablethotels.com/media/ecs/global/michelin-articles/Missing/Lead-Zante.jpg",
     activities: 63,
     tours: 9,
     price: 2490,
@@ -27,6 +30,7 @@ const defaultDeals = [
   {
     id: 3,
     title: "Switzerland",
+    slug: "switzerland",
     image:
       "https://www.thetimes.com/imageserver/image/%2Fmethode%2Ftimes%2Fprod%2Fweb%2Fbin%2F7510fc3d-ce85-4200-a7cf-49d6f22ea9e7.jpg?crop=4999%2C2812%2C0%2C0",
     activities: 14,
@@ -37,28 +41,27 @@ const defaultDeals = [
   },
 ];
 
-export default function OffersSection({
-  deals = defaultDeals,
-  title = "Special Offers",
-}) {
+export default function OffersSection({ deals = defaultDeals, title = "Special Offers" }) {
   return (
-    <section className="offers-section py-5">
+    <section id = "offers" className="offers-section py-5">
       <div className="container overflow-visible">
         <div className="text-center mb-4">
           <small className="handpicked-title d-block">Handpicked deals</small>
           <h2 className="special-title mt-1">{title}</h2>
         </div>
 
-
         <div className="row g-4 justify-content-center align-items-end offers-row">
           {deals.slice(0, 3).map((d, i) => (
             <div className="col-11 col-sm-10 col-md-6 col-lg-4" key={d.id ?? i}>
-              <div
+              {/* I GJITHË CARDI ËSHTË LINK */}
+              <Link
+                to={`/offers/${d.slug || d.title.toLowerCase()}`}
                 className={[
                   "offer-card card border-0",
                   i === 0 ? "tilt-left" : "",
                   i === 2 ? "tilt-right" : "",
                 ].join(" ")}
+                aria-label={`Open ${d.title} deal`}
               >
                 <div className="position-relative overflow-visible offer-frame">
                   <img src={d.image} className="offer-img" alt={d.title} />
@@ -66,17 +69,19 @@ export default function OffersSection({
                   {/* top-left badges */}
                   <div className="badge-stack">
                     {d.badge && <span className="chip chip-yellow">{d.badge}</span>}
-                    {d.rating && (
-                      <span className="chip chip-dark">★ {d.rating}</span>
-                    )}
+                    {d.rating && <span className="chip chip-dark">★ {d.rating}</span>}
                   </div>
 
-                  {/* wishlist */}
-                  <button className="icon-btn wish" aria-label="Save deal">
+                  {/* wishlist (nuk lejojmë navigim) */}
+                  <button
+                    className="icon-btn wish"
+                    aria-label="Save deal"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     ♥
                   </button>
 
-                  {/* bottom info bar (always visible) */}
+                  {/* bottom info bar */}
                   <div className="info-bar">
                     <div className="ib-left">
                       <div className="ib-title">{d.title}</div>
@@ -85,15 +90,13 @@ export default function OffersSection({
                       </div>
                     </div>
 
-                    <button className="ib-cta" aria-label={`View ${d.title}`}>
-                      <span className="ib-price">
-                        ${Number(d.price).toLocaleString()}
-                      </span>
+                    <span className="ib-cta" aria-hidden="true">
+                      <span className="ib-price">${Number(d.price).toLocaleString()}</span>
                       <span className="ib-arrow">›</span>
-                    </button>
+                    </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
