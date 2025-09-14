@@ -4,10 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Header from "./pages/Header";
+import Header from "./components/Header";
 import CategoryPage from "./pages/CategoryPage";
 import DestinationPage from "./pages/DestinationPage";
 import OfferDetailPage from "./pages/OfferDetailPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="/categories/:slug" element={<CategoryPage />} />
         <Route path="/destination/:code" element={<DestinationPage />} />
         <Route path="/offers/:slug" element={<OfferDetailPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );

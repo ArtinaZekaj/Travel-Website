@@ -1,8 +1,10 @@
-// src/components/Header.jsx
 import { Link } from "react-router-dom";
-import "../styles/home.css"; // që të marrë të njëjtat stile (.custom-navbar, etj.)
+import "../styles/home.css";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
+  const { user, handleLogout } = useAuth();
+
   return (
     <header className="custom-navbar">
       <div className="nav-left">
@@ -17,7 +19,6 @@ export default function Header() {
 
       <nav className="nav-center">
         <ul>
-          {/* Këta janë anchor links që të çojnë te seksionet në Home */}
           <li className="active"><a href="/#home">Home</a></li>
           <li><a href="/#tour">Categories</a></li>
           <li><a href="/#top-destinations">Destinations</a></li>
@@ -29,7 +30,22 @@ export default function Header() {
       <div className="nav-right">
         <button className="icon-btn" aria-label="Search">🔍</button>
         <button className="icon-btn" aria-label="Language">🌐</button>
-        <button className="btn-signin">Sign In</button>
+
+        {user ? (
+          <>
+            <span className="user-name">{user.name}</span>
+            <button onClick={handleLogout} className="btn-signin">Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <button className="btn-signin">Sign In</button>
+            </Link>
+            <Link to="/register">
+              <button className="btn-signin">Register</button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
