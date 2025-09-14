@@ -1,22 +1,31 @@
-// src/pages/CategoryPage.jsx
 import { useParams, Link, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../styles/categoryPage.css";
-import { categoryData } from "../data/categories"; // ← vetëm importi
 
 export default function CategoryPage() {
   const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [category, setCategory] = useState(null);
+  const [tours, setTours] = useState([]);
 
-  const category = categoryData[slug];
-  if (!category) return <h2 className="text-center mt-5">Category not found</h2>;
+  useEffect(() => {
+    fetch(`http://127.0.0.1:8000/api/categories/${slug}/tours`)
+      .then(res => res.json())
+      .then(data => {
+        setCategory(data.category);
+        setTours(data.tours);
+      })
+      .catch(err => console.error(err));
+  }, [slug]);
+
+  if (!category) return <h2 className="text-center mt-5">Loading...</h2>;
 
   const selectedCountry = (searchParams.get("country") || "").toLowerCase();
+  const allCountries = Array.from(new Set(tours.map((t) => t.country)));
 
-  const allCountries = Array.from(new Set(category.tours.map((t) => t.country)));
-
-  const tours = selectedCountry
-    ? category.tours.filter((t) => t.country.toLowerCase() === selectedCountry)
-    : category.tours;
+  const filteredTours = selectedCountry
+    ? tours.filter((t) => t.country.toLowerCase() === selectedCountry)
+    : tours;
 
   const setCountry = (c) => {
     if (!c) setSearchParams({});
@@ -26,14 +35,17 @@ export default function CategoryPage() {
   return (
     <div className="category-page">
       {/* HERO */}
-      <section className="cat-hero text-white" style={{ backgroundImage: `url(${category.heroImage})` }}>
+      <section
+        className="cat-hero text-white"
+        style={{ backgroundImage: `url(${category.hero_image})` }}
+      >
         <div className="cat-hero__overlay" />
         <div className="container position-relative">
           <Link to="/" className="text-white-50 small d-inline-flex align-items-center mb-3">
             <span className="me-2">←</span> Back to Home
           </Link>
           <h1 className="display-5 fw-bold mb-2">{category.title}</h1>
-          <p className="lead m-0">{category.subtitle}</p>
+          <p className="lead m-0">{category.subtitle || ""}</p>
         </div>
       </section>
 
@@ -65,7 +77,7 @@ export default function CategoryPage() {
       {/* GRID */}
       <div className="container my-5">
         <div className="row g-4">
-          {tours.map((t) => (
+          {filteredTours.map((t) => (
             <div className="col-12 col-md-6 col-lg-4" key={t.id}>
               <article className="tour-card shadow-sm rounded-4 h-100 border-0">
                 <div className="tour-card__media">
@@ -81,10 +93,10 @@ export default function CategoryPage() {
 
                   <div className="d-flex justify-content-between align-items-center mt-3">
                     <div>
-                      <div className="fw-bold">${t.price.toLocaleString()}</div>
+                      <div className="fw-bold">${Number(t.price).toLocaleString()}</div>
                       <div className="small text-muted">
                         <i className="bi bi-star-fill me-1"></i>
-                        {t.rating.toFixed(1)}
+                        {t.rating}
                       </div>
                     </div>
                     <button className="btn btn-warning rounded-pill px-3">Book Now</button>
@@ -95,7 +107,7 @@ export default function CategoryPage() {
           ))}
         </div>
 
-        {tours.length === 0 && (
+        {filteredTours.length === 0 && (
           <p className="text-center text-muted mt-4">No tours found for this country.</p>
         )}
       </div>
