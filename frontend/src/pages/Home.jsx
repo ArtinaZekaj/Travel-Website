@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import countries from "../data/countries";
 import "../styles/home.css";
 import TourCategories from "../pages/TourCategories";
 import "../styles/tourCategories.css";
@@ -11,32 +10,45 @@ import Footer from "../pages/footer";
 import "../styles/footer.css";
 import WhyChooseUs from "../pages/WhyChooseUs";
 import "../styles/whyChooseUs.css";
-// import { Link } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+// Config carousel
 const CARD_W = 350;
 const CARD_H = 500;
 const GAP = 16;
-const VISIBLE = 3;  
+const VISIBLE = 3;
 const AUTOPLAY_MS = 2000;
 
+// URL i backend-it (nga .env të frontend)
+const API = import.meta.env.VITE_API_URL;
+
 export default function Home() {
+  const [destinations, setDestinations] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
   const navigate = useNavigate();
 
-  // autoplay
+  // Fetch data nga backend
   useEffect(() => {
+    fetch(`${API}/api/destinations`)
+      .then((res) => res.json())
+      .then((data) => setDestinations(data))
+      .catch((err) => console.error("Error fetching destinations:", err));
+  }, []);
+
+  // Autoplay carousel
+  useEffect(() => {
+    if (destinations.length === 0) return;
+
     const id = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % countries.length);
-      setCardIndex((prev) => (prev + 1) % countries.length);
+      setActiveIndex((prev) => (prev + 1) % destinations.length);
+      setCardIndex((prev) => (prev + 1) % destinations.length);
     }, AUTOPLAY_MS);
 
     return () => clearInterval(id);
-  }, []);
+  }, [destinations]);
 
-  
-  const active = countries[activeIndex] ?? countries[0];
+  const active = destinations[activeIndex] ?? {};
 
   // carousel track style
   const trackStyle = {
@@ -46,7 +58,7 @@ export default function Home() {
     transition: "transform .6s ease",
   };
 
-  // klikimi mbi kartë
+  // Klikimi mbi kartë
   const pick = (i) => {
     setActiveIndex(i);
     setCardIndex(i);
@@ -62,17 +74,18 @@ export default function Home() {
       >
         <div className="home-overlay" />
 
-
         {/* Hero Content */}
         <div className="home-content">
-          <h1 className="home-title">{active.name.toUpperCase()}</h1>
+          <h1 className="home-title">{active.name?.toUpperCase()}</h1>
           <p className="home-desc">{active.description}</p>
-          <button
-            className="btn-explore"
-            onClick={() => navigate(`/destination/${active.code}`)}
-          >
-            Explore
-          </button>
+          {active.code && (
+            <button
+              className="btn-explore"
+              onClick={() => navigate(`/destination/${active.code}`)}
+            >
+              Explore
+            </button>
+          )}
         </div>
 
         {/* Card Carousel */}
@@ -81,9 +94,9 @@ export default function Home() {
           style={{ width: VISIBLE * CARD_W + (VISIBLE - 1) * GAP }}
         >
           <div className="cards-track" style={trackStyle}>
-            {countries.map((c, i) => (
+            {destinations.map((c, i) => (
               <div
-                key={c.name}
+                key={c.id}
                 className={`country-card ${i === activeIndex ? "active" : ""}`}
                 style={{ width: CARD_W, height: CARD_H }}
                 onClick={() => pick(i)}
@@ -101,11 +114,6 @@ export default function Home() {
       <WhyChooseUs />
       <OffersSection />
       <Footer />
-      {/* <Link to="/categories/adventure-tours">Adventure Tours</Link>
-      <Link to="/categories/cultural-tours">Cultural Tours</Link>
-      <Link to="/categories/beach-getaways">Beach Getaways</Link>
-      <Link to="/categories/luxury-escapes">Luxury Escapes</Link>
-      <Link to="/categories/family-vacations">Family Vacations</Link> */}
     </>
   );
 }
