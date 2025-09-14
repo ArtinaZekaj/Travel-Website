@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
-
 class AuthController extends Controller
 {
     // REGISTER
@@ -23,11 +22,15 @@ class AuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => 'user',
         ]);
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(['access_token' => $token]);
+        return response()->json([
+            'access_token' => $token,
+            'user' => $user
+        ]);
     }
 
     // LOGIN
@@ -39,24 +42,37 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
+        $user = JWTAuth::user(); // ✅ Merr user-in direkt nga token-i
+        $refreshToken = JWTAuth::fromUser($user);
+
         return response()->json([
             'access_token'  => $token,
-            'refresh_token' => $token  // për thjeshtësi në projekt fakulteti
+            'refresh_token' => $refreshToken,
+            'user'          => $user
         ]);
-    }
-
-    // USER INFO
-    public function me()
-    {
-        return response()->json(JWTAuth::parseToken()->authenticate());
     }
 
     // REFRESH TOKEN
     public function refresh()
     {
-        $newToken = JWTAuth::parseToken()->refresh();
-        return response()->json(['access_token' => $newToken]);
+        try {
+            $newToken = JWTAuth::parseToken()->refresh();
+            return response()->json([
+                'access_token' => $newToken
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Invalid refresh token'], 401);
+        }
     }
+
+    // USER INFO
+    public function me()
+    {
+        $user = JWTAuth::parseToken()->authenticate(); // ✅ Kjo është më e sigurt
+        return response()->json($user);
+    }
+
+
 
     // LOGOUT
     public function logout()
