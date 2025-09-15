@@ -117,7 +117,7 @@ export default function DestinationPage() {
                                         <div className="card-body p-4">
                                             <h4 className="mb-3">Why Visit?</h4>
                                             <p className="text-muted mb-3">
-                                                {destination.name} blends scenery, culture and cuisine into a memorable trip.
+                                                {destination.name} blends scenery, culture and cuisine into a memorable trip. Our curated activities balance exploration and downtime so you see the best without feeling rushed.
                                             </p>
                                             <div className="d-flex flex-wrap gap-2">
                                                 {["Iconic sights", "Local guides", "Hidden gems", "Great food", "Scenic routes", "Photo spots"].map((t) => (
