@@ -13,12 +13,16 @@ Route::post('/refresh', [AuthController::class, 'refresh']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
-
+//Home section:
 Route::get('/destinations', [DestinationController::class, 'index']);
+//Home categories section:
 Route::get('/categories', [CategoryController::class, 'index']);
+//Home offers section:
 Route::get('/offers', [OfferController::class, 'index']);
+//Categories Page:
 Route::get('/categories/{slug}/tours', [TourController::class, 'getByCategory']);
-
+//Destination Page:
+Route::get('/destinations/{code}', [DestinationController::class, 'show']);
 
 
 Route::middleware('auth:api')->group(function () {

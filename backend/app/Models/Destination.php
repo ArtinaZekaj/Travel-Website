@@ -9,5 +9,19 @@ class Destination extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['code', 'name', 'description', 'image'];
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+        'image',
+        'days',
+        'price',
+        'rating',
+        'blurb',
+        'gallery',
+    ];
+
+    protected $casts = [
+        'gallery' => 'array',
+    ];
 }
