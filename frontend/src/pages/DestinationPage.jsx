@@ -7,6 +7,88 @@ export default function DestinationPage() {
     const [destination, setDestination] = useState(null);
     const [related, setRelated] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showBookingModal, setShowBookingModal] = useState(false);
+    const [feedback, setFeedback] = useState({ show: false, message: "", type: "" });
+
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        passport: "",
+        dob: "",
+        requests: "",
+        travelDetails: "",
+        days: "",
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const token = localStorage.getItem("access_token");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // 🔑 Kontrollo nëse user është i loguar
+        if (!token) {
+            localStorage.setItem("redirect_after_login", window.location.pathname);
+            window.location.href = "/login";
+            return;
+        }
+
+        try {
+            const res = await fetch("http://127.0.0.1:8000/api/bookings", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    destination_id: destination.id,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    address: formData.address,
+                    passport_number: formData.passport,
+                    dob: formData.dob,
+                    special_requests: formData.requests,
+                    travel_details: formData.travelDetails,
+                    guests: formData.guests || 1,
+                    preferred_date: formData.preferredDate,
+                    days: formData.days,
+                }),
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                setFeedback({
+                    show: true,
+                    type: "error",
+                    message: errorData.message || "Something went wrong!",
+                });
+                return;
+            }
+
+            const data = await res.json();
+            setFeedback({
+                show: true,
+                type: "success",
+                message: `Booking confirmed! Thank you, ${data.booking.first_name}.`,
+            });
+        } catch (err) {
+            setFeedback({
+                show: true,
+                type: "error",
+                message: "Failed to connect to the server. Please try again later.",
+            });
+        }
+    };
+
 
     useEffect(() => {
         async function fetchData() {
@@ -190,7 +272,19 @@ export default function DestinationPage() {
                                         <span className="small text-muted">From</span>
                                         <div className="display-6 fw-bold text-success">${Number(destination.price).toLocaleString()}</div>
                                     </div>
-                                    <div className="small text-muted mb-3">per person · {destination.days} days</div>
+                                    <div className="mb-3">
+                                        <label className="form-label small">Number of Days</label>
+                                        <input
+                                            type="number"
+                                            name="days"
+                                            value={formData.days}
+                                            onChange={handleChange}
+                                            className="form-control rounded-3"
+                                            placeholder="Enter number of days"
+                                            min="1"
+                                        />
+                                    </div>
+
 
                                     <div className="mb-3">
                                         <label className="form-label small">Preferred dates</label>
@@ -204,7 +298,10 @@ export default function DestinationPage() {
                                         </select>
                                     </div>
 
-                                    <button className="btn btn-orange w-100 py-2 rounded-3">
+                                    <button
+                                        className="btn btn-orange w-100 py-2 rounded-3"
+                                        onClick={() => setShowBookingModal(true)}
+                                    >
                                         Book Now <i className="bi bi-arrow-right ms-2" />
                                     </button>
 
@@ -230,7 +327,7 @@ export default function DestinationPage() {
                             {related.map(r => (
                                 <div className="col-12 col-md-6 col-lg-4" key={r.code}>
                                     <div className="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
-                                        <img src={r.top_image || r.image} className="w-100 object-fit-cover" style= {{ height: 180 }} alt={r.name} />
+                                        <img src={r.top_image || r.image} className="w-100 object-fit-cover" style={{ height: 180 }} alt={r.name} />
                                         <div className="card-body">
                                             <div className="d-flex justify-content-between align-items-start">
                                                 <h6 className="mb-1">{r.name}</h6>
@@ -252,6 +349,198 @@ export default function DestinationPage() {
                             ))}
                         </div>
                     </section>
+                    {showBookingModal && (
+                        <>
+                            {/* BACKDROP */}
+                            <div className="custom-backdrop"></div>
+
+                            {/* MODAL */}
+                            <div className="modal fade show d-block" tabIndex="-1">
+                                <div className="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-sm-down">
+                                    <div className="modal-content rounded-4">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title">Complete Your Booking</h5>
+                                            <button
+                                                type="button"
+                                                className="btn-close"
+                                                onClick={() => setShowBookingModal(false)}
+                                            ></button>
+                                        </div>
+
+                                        <div className="modal-body">
+                                            <form className="row g-3">
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">First Name</label>
+                                                    <input
+                                                        type="text"
+                                                        name="firstName"
+                                                        value={formData.firstName}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="John"
+                                                    />
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">Last Name</label>
+                                                    <input
+                                                        type="text"
+                                                        name="lastName"
+                                                        value={formData.lastName}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="Doe"
+                                                    />
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">Email</label>
+                                                    <input
+                                                        type="email"
+                                                        name="email"
+                                                        value={formData.email}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="you@example.com"
+                                                    />
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">Phone</label>
+                                                    <input
+                                                        type="tel"
+                                                        name="phone"
+                                                        value={formData.phone}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="+383 44 123 456"
+                                                    />
+                                                </div>
+
+                                                <div className="col-12">
+                                                    <label className="form-label small">Address</label>
+                                                    <input
+                                                        type="text"
+                                                        name="address"
+                                                        value={formData.address}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="Street, City, Country"
+                                                    />
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">Passport / ID Number</label>
+                                                    <input
+                                                        type="text"
+                                                        name="passport"
+                                                        value={formData.passport}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="AB1234567"
+                                                    />
+                                                </div>
+
+                                                <div className="col-md-6">
+                                                    <label className="form-label small">Date of Birth</label>
+                                                    <input
+                                                        type="date"
+                                                        name="dob"
+                                                        value={formData.dob}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                    />
+                                                </div>
+
+                                                <div className="col-12">
+                                                    <label className="form-label small">Special Requests</label>
+                                                    <textarea
+                                                        name="requests"
+                                                        value={formData.requests}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="Any special requests or notes..."
+                                                        rows="3"
+                                                    ></textarea>
+                                                </div>
+
+                                                <div className="col-12">
+                                                    <label className="form-label small">Travel Details</label>
+                                                    <textarea
+                                                        name="travelDetails"
+                                                        value={formData.travelDetails}
+                                                        onChange={handleChange}
+                                                        className="form-control rounded-3"
+                                                        placeholder="Flight info, hotel preferences, etc..."
+                                                        rows="3"
+                                                    ></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div className="modal-footer">
+                                            <button
+                                                type="button"
+                                                className="btn btn-secondary"
+                                                onClick={() => setShowBookingModal(false)}
+                                            >
+                                                Close
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="btn btn-orange"
+                                                onClick={handleSubmit}
+                                            >
+                                                Continue
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+                    {feedback.show && (
+                        <>
+                            {/* BACKDROP I LEHTË */}
+                            <div
+                                className="position-fixed top-0 start-0 w-100 h-100"
+                                style={{ background: "rgba(0,0,0,0.2)", zIndex: 1999 }}
+                            ></div>
+
+                            {/* FEEDBACK BOX */}
+                            <div
+                                className="position-fixed top-50 start-50 translate-middle"
+                                style={{ zIndex: 2000 }}
+                            >
+                                <div
+                                    className="bg-white text-center p-4 shadow-lg rounded-4"
+                                    style={{
+                                        minWidth: "350px",
+                                        maxWidth: "90%",
+                                        border: feedback.type === "success" ? "2px solid #28a745" : "2px solid #dc3545",
+                                    }}
+                                >
+                                    <h5
+                                        className={`mb-3 fw-bold ${feedback.type === "success" ? "text-success" : "text-danger"}`}
+                                    >
+                                        {feedback.message}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        className="btn btn-dark px-4"
+                                        onClick={() => {
+                                            setFeedback({ show: false, message: "", type: "" });
+                                            if (feedback.type === "error" && feedback.message.includes("login")) {
+                                                window.location.href = "/login";
+                                            }
+                                        }}
+                                    >
+                                        OK
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </main>
         </>

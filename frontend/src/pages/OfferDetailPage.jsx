@@ -2,23 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "../styles/offerDetail.css";
 
-const DEFAULT_INCLUDED = [
-  "Round-trip flights from major cities",
-  "4-star hotel accommodations (7 nights)",
-  "Daily breakfast and 4 gourmet dinners",
-  "Private transportation with driver",
-  "Professional English-speaking guide",
-  "All entrance fees and skip-the-line tickets",
-  "Cooking class and wine tastings",
-  "Travel insurance coverage",
-];
 
-const DEFAULT_FEATURES = [
-  "Limited to 12 travelers for intimate experience",
-  "Michelin-recommended restaurant reservations",
-  "Professional photographer for group photos",
-  "Exclusive after-hours museum access",
-];
 
 function daysLeft(validUntil) {
   const end = new Date(validUntil);
@@ -60,7 +44,7 @@ export default function OfferDetailPage() {
 
   const dLeft = daysLeft(offer.valid_until);
 
-  // ✅ Llogaritjet e reja
+  //Llograitjet:
   const originalPrice = offer.original_price || offer.price; 
   const discount = originalPrice - offer.price;
   const savePercent = ((discount / originalPrice) * 100).toFixed(0);

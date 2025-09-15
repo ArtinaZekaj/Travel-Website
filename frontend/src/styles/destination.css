@@ -202,3 +202,17 @@
   justify-content: space-between; 
   height: 100%;                
 }
+.custom-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); /* efekti blur */
+  background-color: rgba(0, 0, 0, 0.35); /* pak errësim */
+  z-index: 1040; /* poshtë modalit */
+}
+
+.modal {
+  z-index: 1050; /* modal sipër backdrop-it */
+}

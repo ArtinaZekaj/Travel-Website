@@ -16,7 +16,15 @@ export default function Login() {
     try {
       const data = await login(email, password);
       setUser(data.user); // vendos user-in nga backend
-      navigate("/"); // pas login → Home
+
+      // 🔑 Kontrollo nëse ekziston një redirect i ruajtur
+      const redirect = localStorage.getItem("redirect_after_login");
+      if (redirect) {
+        localStorage.removeItem("redirect_after_login");
+        navigate(redirect); // shko tek faqja që ishte duke parë
+      } else {
+        navigate("/"); // default → Home
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
