@@ -12,7 +12,7 @@ class OffersSeeder extends Seeder
      */
     public function run(): void
     {
-        Offer::truncate(); // fshin të dhënat ekzistuese
+        Offer::truncate(); 
 
         Offer::insert([
             [
