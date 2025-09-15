@@ -11,4 +11,9 @@ class OfferController extends Controller
     {
         return response()->json(Offer::all());
     }
+    public function show($slug)
+    {
+        $offer = Offer::where('slug', $slug)->firstOrFail();
+        return response()->json($offer);
+    }
 }

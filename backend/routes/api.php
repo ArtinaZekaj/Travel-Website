@@ -23,6 +23,8 @@ Route::get('/offers', [OfferController::class, 'index']);
 Route::get('/categories/{slug}/tours', [TourController::class, 'getByCategory']);
 //Destination Page:
 Route::get('/destinations/{code}', [DestinationController::class, 'show']);
+//Offer Page:
+Route::get('/offers/{slug}', [OfferController::class, 'show']);
 
 
 Route::middleware('auth:api')->group(function () {
