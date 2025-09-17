@@ -1,12 +1,16 @@
-import { useParams, Link, useSearchParams } from "react-router-dom";
+import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/categoryPage.css";
+import BookingModal from "../components/BookingModal";
 
 export default function CategoryPage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState(null);
   const [tours, setTours] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTour, setSelectedTour] = useState(null);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/categories/${slug}/tours`)
@@ -99,7 +103,22 @@ export default function CategoryPage() {
                         {t.rating}
                       </div>
                     </div>
-                    <button className="btn btn-warning rounded-pill px-3">Book Now</button>
+                    <button
+                      className="btn btn-warning rounded-pill px-3"
+                      onClick={() => {
+                        const token = localStorage.getItem("access_token");
+                        if (!token) {
+                          // ruaj faqen aktuale ku user ishte
+                          localStorage.setItem("redirect_after_login", window.location.pathname);
+                          navigate("/login");
+                          return;
+                        }
+                        setSelectedTour(t);
+                        setShowModal(true);
+                      }}
+                    >
+                      Book Now
+                    </button>
                   </div>
                 </div>
               </article>
@@ -109,6 +128,15 @@ export default function CategoryPage() {
 
         {filteredTours.length === 0 && (
           <p className="text-center text-muted mt-4">No tours found for this country.</p>
+        )}
+
+        {showModal && (
+          <BookingModal
+            show={showModal}
+            onClose={() => setShowModal(false)}
+            item={selectedTour}
+            itemType="tour"
+          />
         )}
       </div>
     </div>

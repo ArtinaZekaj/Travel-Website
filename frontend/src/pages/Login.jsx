@@ -15,15 +15,20 @@ export default function Login() {
     e.preventDefault();
     try {
       const data = await login(email, password);
-      setUser(data.user); // vendos user-in nga backend
 
-      // 🔑 Kontrollo nëse ekziston një redirect i ruajtur
+      // 🔑 Ruaj token-in
+      localStorage.setItem("access_token", data.access_token);
+
+      // 🔑 Vendos user-in në context
+      setUser(data.user);
+
+      // 🔑 Redirect pas login
       const redirect = localStorage.getItem("redirect_after_login");
       if (redirect) {
         localStorage.removeItem("redirect_after_login");
-        navigate(redirect); // shko tek faqja që ishte duke parë
+        navigate(redirect);
       } else {
-        navigate("/"); // default → Home
+        navigate("/");
       }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {

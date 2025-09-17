@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "../styles/offerDetail.css";
-
-
+import BookingModal from "../components/BookingModal";
 
 function daysLeft(validUntil) {
   const end = new Date(validUntil);
@@ -12,8 +11,10 @@ function daysLeft(validUntil) {
 
 export default function OfferDetailPage() {
   const { slug } = useParams();
+   const navigate = useNavigate(); 
   const [offer, setOffer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetch(`http://127.0.0.1:8000/api/offers/${slug}`)
@@ -45,7 +46,7 @@ export default function OfferDetailPage() {
   const dLeft = daysLeft(offer.valid_until);
 
   //Llograitjet:
-  const originalPrice = offer.original_price || offer.price; 
+  const originalPrice = offer.original_price || offer.price;
   const discount = originalPrice - offer.price;
   const savePercent = ((discount / originalPrice) * 100).toFixed(0);
 
@@ -90,7 +91,21 @@ export default function OfferDetailPage() {
             </div>
 
             <div className="cta-row">
-              <button className="btn-cta">Claim This Offer</button>
+              <button
+                className="btn-cta"
+                onClick={() => {
+                  const token = localStorage.getItem("access_token");
+                  if (!token) {
+                    // ruaj faqen aktuale ku user ishte
+                    localStorage.setItem("redirect_after_login", window.location.pathname);
+                    navigate("/login");
+                    return;
+                  }
+                  setShowModal(true);
+                }}
+              >
+                Claim This Deal Now
+              </button>
             </div>
           </div>
         </div>
@@ -219,7 +234,21 @@ export default function OfferDetailPage() {
                 <div className="ig">🍽<span>Meals</span></div>
               </div>
 
-              <button className="btn-cta big">Claim This Deal Now</button>
+              <button
+                className="btn-cta big"
+                onClick={() => {
+                  const token = localStorage.getItem("access_token");
+                  if (!token) {
+                    // ruaj faqen aktuale ku user ishte
+                    localStorage.setItem("redirect_after_login", window.location.pathname);
+                    navigate("/login");
+                    return;
+                  }
+                  setShowModal(true);
+                }}
+              >
+                Claim This Deal Now
+              </button>
 
               <ul className="fine-print">
                 <li>○ Secure booking · Free cancellation</li>
@@ -256,6 +285,14 @@ export default function OfferDetailPage() {
           </div>
         </div>
       </div>
+      {showModal && (
+        <BookingModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          item={offer}
+          itemType="offer"
+        />
+      )}
     </div>
   );
 }
