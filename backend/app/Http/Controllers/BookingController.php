@@ -12,6 +12,7 @@ class BookingController extends Controller
         $validated = $request->validate([
             'destination_id' => 'nullable|exists:destinations,id',
             'tour_id' => 'nullable|exists:tours,id',
+            'offer_id' => 'nullable|exists:offers,id',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
