@@ -33,7 +33,8 @@ Route::get('/offers/{slug}', [OfferController::class, 'show']);
 // nëse do që booking të jetë vetëm për user të loguar (me JWT), vendose brenda middleware
 Route::middleware('auth:api')->group(function () {
     Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/bookings/my', [BookingController::class, 'myBookings']);
+     Route::put('/bookings/{id}', [BookingController::class, 'update']);
+    Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
     Route::get('/me', [AuthController::class, 'me']);
 });
-
-

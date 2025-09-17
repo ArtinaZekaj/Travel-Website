@@ -10,6 +10,7 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',   
         'destination_id',
         'tour_id',
         'offer_id',
@@ -26,4 +27,11 @@ class Booking extends Model
         'preferred_date',
         'days',
     ];
+
+    // Nje rezervim i perket nje useri ----
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }
