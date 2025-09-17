@@ -45,7 +45,7 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                 body: JSON.stringify({
                     destination_id: item.destination_id || null,
                     tour_id: itemType === "tour" ? item.id : null,
-                    offer_id: itemType === "offer" ? item.id : null, // e re
+                    offer_id: itemType === "offer" ? item.id : null,
                     first_name: formData.firstName,
                     last_name: formData.lastName,
                     email: formData.email,

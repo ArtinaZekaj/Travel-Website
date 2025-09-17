@@ -24,6 +24,11 @@ export default function Header() {
           <li><a href="/#top-destinations">Destinations</a></li>
           <li><a href="/#why-us">About</a></li>
           <li><a href="/#offers">Offers</a></li>
+          {user && (
+            <li>
+              <Link to="/appointments">My Appointments</Link>
+            </li>
+          )}
         </ul>
       </nav>
 
