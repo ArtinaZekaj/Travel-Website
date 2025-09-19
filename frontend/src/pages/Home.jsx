@@ -11,6 +11,7 @@ import "../styles/footer.css";
 import WhyChooseUs from "../pages/WhyChooseUs";
 import "../styles/whyChooseUs.css";
 import { useNavigate } from "react-router-dom";
+import ReviewsSection from "../components/ReviewsSection";
 
 // Config carousel
 const CARD_W = 350;
@@ -113,6 +114,7 @@ export default function Home() {
       <TopDestinations />
       <WhyChooseUs />
       <OffersSection />
+      <ReviewsSection />
       <Footer />
     </>
   );

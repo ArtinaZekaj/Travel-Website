@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/destination.css";
 import BookingModal from "../components/BookingModal";
+// import ReviewsSection from "../components/ReviewsSection";
 
 export default function DestinationPage() {
     const { code } = useParams();
@@ -289,7 +290,7 @@ export default function DestinationPage() {
                             </div>
                         </aside>
                     </div>
-
+                    {/* <ReviewsSection refType="destination" refId={String(destination.id)} /> */}
                     {/* Related */}
                     <section className="mt-5">
                         <h4 className="mb-3">You may also like</h4>
