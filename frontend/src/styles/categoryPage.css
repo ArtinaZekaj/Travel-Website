@@ -1,9 +1,10 @@
 /* HERO */
-.category-page{
-  background: #fff;        
-  min-height: 100dvh;      
+.category-page {
+  background: #fff;
+  min-height: 100dvh;
 }
-.cat-hero{
+
+.cat-hero {
   position: relative;
   min-height: 500px;
   display: flex;
@@ -11,26 +12,46 @@
   background-size: cover;
   background-position: center;
 }
-.cat-hero__overlay{
+
+.cat-hero__overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.25) 40%, rgba(0,0,0,.35));
 }
 
+/* Back to Home link & Subtitle */
+.cat-hero .text-white-50 {
+  color: #ff8a1e !important;
+}
+
 /* CARD */
-.tour-card{
+.tour-card {
   background: #fff;
   overflow: hidden;
+  border: 2px solid #dee2e6; /* light gray border */
+  min-height: 450px; /* më e gjatë */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.tour-card__media{
+
+.tour-card:hover {
+  box-shadow: 0 18px 42px rgba(0,0,0,.12);
+  transform: translateY(-2px);
+}
+
+.tour-card__media {
   position: relative;
-  height: 220px;               
+  height: 250px; /* pak më e madhe */
   overflow: hidden;
 }
-.tour-card__media img{
+
+.tour-card__media img {
   display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.tour-card__chip{
+
+.tour-card__chip {
   position: absolute;
   top: 12px;
   left: 12px;
@@ -40,13 +61,49 @@
   box-shadow: 0 6px 16px rgba(0,0,0,.12);
 }
 
-/* QoS vizuale */
-.tour-card:hover{
-  box-shadow: 0 18px 42px rgba(0,0,0,.12);
-  transform: translateY(-2px);
-  transition: .18s ease;
+@media (min-width: 992px) {
+  .tour-card__media {
+    height: 280px; /* për desktop */
+  }
 }
 
-@media (min-width: 992px){
-  .tour-card__media{ height: 240px; }
+/* Filter buttons */
+.container .btn.btn-warning,
+.container .btn.btn-warning.text-white {
+  background-color: #ff8a1e;
+  border-color: #ff8a1e;
+  color: #fff;
+}
+
+.container .btn.btn-warning:hover {
+  background-color: #e6771b;
+  border-color: #e6771b;
+}
+
+/* Book Now & View Details buttons inside card */
+.tour-card .btn {
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tour-card .btn.btn-warning {
+  background-color: #ff8a1e;
+  border: none;
+  color: #fff;
+}
+
+.tour-card .btn.btn-warning:hover {
+  background-color: #e6771b;
+}
+
+.tour-card .btn.btn-outline-secondary {
+  background-color: #ff8a1e;
+  border: none;
+  color: #fff;
+}
+
+.tour-card .btn.btn-outline-secondary:hover {
+  background-color: #e6771b;
 }

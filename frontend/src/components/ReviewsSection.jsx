@@ -46,7 +46,7 @@ export default function ReviewsSection({ refType, refId }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // 🔑 token
+        Authorization: `Bearer ${token}`, 
       },
       body: JSON.stringify(body),
     });
@@ -64,12 +64,10 @@ export default function ReviewsSection({ refType, refId }) {
   function handleWriteReview() {
     const token = localStorage.getItem("access_token");
     if (!token) {
-      // user nuk është loguar → ridrejto te login
       localStorage.setItem("redirect_after_login", window.location.pathname);
       navigate("/login");
       return;
     }
-    // user është loguar → hap formën
     setShowForm(!showForm);
   }
 
