@@ -9,6 +9,7 @@ use App\Http\Controllers\TourController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TourDetailController;
+use App\Http\Controllers\NotificationController;
 
 // -------- AUTH --------
 Route::post('/register', [AuthController::class, 'register']);
@@ -44,6 +45,9 @@ Route::get('/tour-details/{id}', [TourDetailController::class, 'show']);
 
 
 Route::middleware('auth:api')->group(function () {
+
+    Route::get('/me', [AuthController::class, 'me']);
+    
     //Bokkings Routes:
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::get('/bookings/my', [BookingController::class, 'myBookings']);
@@ -53,5 +57,9 @@ Route::middleware('auth:api')->group(function () {
     //Reviews:
     Route::post('/reviews', [ReviewController::class, 'store']);
 
-    Route::get('/me', [AuthController::class, 'me']);
+    //Notifications:
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
+
+    
 });

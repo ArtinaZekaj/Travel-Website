@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\NewBookingNotification;
+use App\Models\Notification;
+
 
 class BookingController extends Controller
 {
@@ -36,6 +39,19 @@ class BookingController extends Controller
             'special_requests',
             'travel_details'
         ]));
+
+        // ✅ Shto njoftim në DB
+        Notification::create([
+            'user_id' => $booking->user_id,
+            'type' => 'booking_created',
+            'message' => "Your booking #{$booking->id} was successfully created!",
+            'data' => [
+                'booking_id' => $booking->id,
+            ],
+        ]);
+
+        // 🔔 Dërgo eventin tek Pusher (opsional)
+        event(new NewBookingNotification("A new booking was created by {$validated['first_name']} {$validated['last_name']}"));
 
         return response()->json([
             'message' => 'Booking created successfully',
