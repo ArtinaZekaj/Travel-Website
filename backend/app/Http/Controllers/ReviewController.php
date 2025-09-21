@@ -10,8 +10,6 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $review = Review::create([
-            'ref_type'  => $request->ref_type,
-            'ref_id'    => (int) $request->ref_id,
             'user_name' => $request->user_name,
             'rating'    => (int) $request->rating,
             'comment'   => $request->comment,

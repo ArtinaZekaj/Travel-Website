@@ -16,6 +16,8 @@ class ToursSeeder extends Seeder
         $luxuryId   = DB::table('categories')->where('slug', 'luxury-escapes')->first()->id;
         $familyId   = DB::table('categories')->where('slug', 'family-vacations')->first()->id;
 
+        DB::table('tours')->truncate();
+
         DB::table('tours')->insert([
 
             // ================= Adventure Tours =================
@@ -29,12 +31,11 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 2890,
                 'image' => 'https://karlobag.eu/images/upload/750px-qz7ta.jpg',
-                'level' => 'Extreme',
                 'desc' => 'Hike across the glacier with breathtaking views from the cable car.',
             ],
             [
                 'category_id' => $adventureId,
-                'title' => 'Rugova Canyon Hike & Via Ferrata',
+                'title' => 'Rugova Canyon Hike',
                 'country' => 'kosovo',
                 'location' => 'Bjeshkët e Nemuna',
                 'days' => '3 days',
@@ -42,7 +43,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.7,
                 'price' => 980,
                 'image' => 'https://www.abenteueralbanien.de/wp-content/uploads/2023/10/Peja-Wander-Tour-Via-Ferrata-Rugova-Canyon-1-5-1024x768.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Scenic hiking through the Rugova Canyon with Via Ferrata segments.',
             ],
             [
@@ -55,7 +55,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1990,
                 'image' => 'https://img2.10bestmedia.com/Images/Photos/422408/Dave-Hansen-Whitewater-and-Scenic-River-Trips_54_990x660.jpg?auto=webp&width=3840&quality=75',
-                'level' => 'Easy',
                 'desc' => 'Rafting on the Snake River rapids, suitable for beginners as well.',
             ],
             [
@@ -68,7 +67,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1690,
                 'image' => 'https://www.backroads.com/sites/default/files/styles/itinerary_533/public/2023/BSII_AOP_ST_22_094_VAR_0.jpg.webp?itok=-l1_SSZu',
-                'level' => 'Moderate',
                 'desc' => 'Cycling through alpine roads, picturesque villages, and gourmet stops.',
             ],
             [
@@ -81,7 +79,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 1250,
                 'image' => 'https://cdn.outsideonline.com/wp-content/uploads/2023/11/Japan_JNTO_h.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Forest trails around the Shiraito waterfalls at the foothills of Mount Fuji.',
             ],
             [
@@ -94,7 +91,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1190,
                 'image' => 'https://focusgreece.com/wp-content/uploads/2018/09/Greece-ATV.jpeg',
-                'level' => 'Easy',
                 'desc' => 'ATV adventure along the coastline, white villages, and breathtaking views.',
             ],
 
@@ -109,7 +105,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 390,
                 'image' => 'https://media.tacdn.com/media/attractions-splice-spp-674x446/0b/22/75/28.jpg',
-                'level' => 'Easy',
                 'desc' => 'Historic stone bridge, Ottoman-era houses, and traditional dishes in the bazaar.',
             ],
             [
@@ -122,7 +117,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 2890,
                 'image' => 'https://media.vintrica.com/tr:f-auto/Kultur%20Schweiz.jpg',
-                'level' => 'Easy',
                 'desc' => 'Discover chalets, local cheese-making, folklore traditions, and panoramic trains.',
             ],
             [
@@ -135,7 +129,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1990,
                 'image' => 'https://cdn.tourradar.com/s3/tour/360x210/273451_661ea3c71356e.jpg',
-                'level' => 'Easy',
                 'desc' => 'Guided visits to Capitol, Lincoln Memorial, Smithsonian museums along National Mall.',
             ],
             [
@@ -148,7 +141,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1690,
                 'image' => 'https://media.bookmundi.com/files/agency/trafalgar/cropped/products/8dc1bba7-e594-48c8-82f3-4b112314e362.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Wander cobblestone lanes, Baroque squares, and taste trattoria classics.',
             ],
             [
@@ -161,7 +153,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 1250,
                 'image' => 'https://i0.wp.com/www.touristjapan.com/wp-content/uploads/2023/10/Kiyomizu-dera-temple-in-autumn-on-sunset-sky-at-Kyoto-Japan-1.jpg',
-                'level' => 'Easy',
                 'desc' => 'Explore Kiyomizu-dera, wooden streets of Higashiyama, tea ceremony, gardens.',
             ],
             [
@@ -174,7 +165,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1190,
                 'image' => 'https://theodorevoyages.fr/en/wp-content/uploads/sites/3/2020/09/009-1.jpg',
-                'level' => 'Easy',
                 'desc' => 'Discover the Parthenon, Acropolis Museum, and stroll Plaka at sunset.',
             ],
 
@@ -189,7 +179,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 390,
                 'image' => 'https://toplist.info/images/800px/best-lakes-to-visit-in-kosovo-916979.jpg',
-                'level' => 'Easy',
                 'desc' => 'Emerald mountain lakes, swim, hike, and picnic with alpine views.',
             ],
             [
@@ -202,7 +191,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 2890,
                 'image' => 'https://static.wixstatic.com/media/f35571_b917b1505c5849ed9621d865a8f5ae50~mv2.webp',
-                'level' => 'Easy',
                 'desc' => 'Bright-blue water, flower promenades, and storybook villages.',
             ],
             [
@@ -215,7 +203,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1990,
                 'image' => 'https://cdn.enjoytravel.com/img/Big7Enjoy/us/travel-news/places-to-visit/the-50-best-beaches-in-america/the-50-best-beaches-in-america-hero_medium_768.webp',
-                'level' => 'Easy',
                 'desc' => 'Snorkel coral bay with glass-clear water and golden sand.',
             ],
             [
@@ -228,7 +215,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1690,
                 'image' => 'https://www.citalia.com/-/media/Bynder/Citalia-destinations/Italy/Coast/Calabria/Destination/Calabria-2021-Coast-001-050961-Hybris.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Clifftop towns, Caribbean-blue coves, beach time, and sunsets.',
             ],
             [
@@ -241,7 +227,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 1250,
                 'image' => 'https://www.planetware.com/wpimages/2020/06/japan-best-beaches-okinawa-beaches.jpg',
-                'level' => 'Easy',
                 'desc' => 'Tropical sands, snorkeling, island vibes, vibrant reefs.',
             ],
             [
@@ -254,7 +239,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1190,
                 'image' => 'https://www.solmarvillas.com/sites/default/files/inline-images/best-beaches-in-greece-paleokastritsa_0.jpg',
-                'level' => 'Easy',
                 'desc' => 'Hop between hidden caves and turquoise coves by boat.',
             ],
 
@@ -268,21 +252,19 @@ class ToursSeeder extends Seeder
                 'group' => '6–14',
                 'rating' => 4.8,
                 'price' => 390,
-                'image' => 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/546388031.jpg',
-                'level' => 'Easy',
+                'image' => 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/546388031.jpg?k=291942c447de80b9f76d3480fc141f18c763aacb90420286a4d2b8bf6097284e&o=&hp=1',
                 'desc' => 'Five-star alpine lodge with indoor pool and spa zones.',
             ],
             [
                 'category_id' => $luxuryId,
-                'title' => 'French Alps Dome Suite — Les Orres',
-                'country' => 'france',
+                'title' => 'Chalet Zermatt Peak',
+                'country' => 'switzerland',
                 'location' => 'Les Orres, Hautes-Alpes',
                 'days' => '7 days',
                 'group' => '4–8',
                 'rating' => 4.9,
                 'price' => 2890,
                 'image' => 'https://www.myboutiquehotel.com/photos/111849/alpin-cocoon-les-orres-102-29036-600x350.jpg',
-                'level' => 'Easy',
                 'desc' => 'Geodesic dome suite, snow forests, and gourmet breakfasts.',
             ],
             [
@@ -295,7 +277,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1990,
                 'image' => 'https://images.luxuryescapes.com/fl_progressive,q_auto:best,dpr_2.0/9rpswkju93b6i1s4ammq',
-                'level' => 'Easy',
                 'desc' => 'Stone lodge, heated pool, firepits, full-service spa.',
             ],
             [
@@ -308,7 +289,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1690,
                 'image' => 'https://www.careofcarl.fr/dokument/bibliotek/Image/CARL_Magazine/Livsstil/2022/20220426-Femklassiska/tremezzo.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Belle Époque hotel, floating pool, gardens, private boat.',
             ],
             [
@@ -320,8 +300,7 @@ class ToursSeeder extends Seeder
                 'group' => '4–12',
                 'rating' => 4.9,
                 'price' => 1250,
-                'image' => 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/416306907.jpg',
-                'level' => 'Easy',
+                'image' => 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/416306907.jpg?k=0c6aad73639975fe44415fd95a33a97c8e1d8411f375be518622fa78ead829f9&o=&hp=1',
                 'desc' => 'Ryokan-style suite, hot-spring bath, tatami lounge.',
             ],
             [
@@ -333,8 +312,7 @@ class ToursSeeder extends Seeder
                 'group' => '2–6',
                 'rating' => 4.8,
                 'price' => 1190,
-                'image' => 'https://q-xx.bstatic.com/xdata/images/hotel/max500/367190993.jpg',
-                'level' => 'Easy',
+                'image' => 'https://q-xx.bstatic.com/xdata/images/hotel/max500/367190993.jpg?k=509d05a67e753dc4599d7b30e939ac40813bc2c4ada57b6909bc763f12fc4c06&o=',
                 'desc' => 'Suite with terrace pool, sunset cocktails, private cruise.',
             ],
 
@@ -349,7 +327,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 390,
                 'image' => 'https://gdb.rferl.org/01000000-0a00-0242-c09b-08dc1e56251b_w1071_r1_s_d3.jpg',
-                'level' => 'Easy',
                 'desc' => 'Family-friendly skiing at Brezovica with sledding spots.',
             ],
             [
@@ -362,7 +339,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 2890,
                 'image' => 'https://www.shutterstock.com/image-photo/happy-family-travaling-switzerland-oeschinensee-600w-2183520129.jpg',
-                'level' => 'Easy',
                 'desc' => 'Pedal boats, stroller paths, and picnic spots with views.',
             ],
             [
@@ -375,7 +351,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1990,
                 'image' => 'https://travelarii.com/blog/wp-content/uploads/2024/08/These-Florida-Family-Vacation-Spots-That-Will-Hit-the-Nail-on-the-Head-%E2%80%93-Guaranteed.jpg',
-                'level' => 'Easy',
                 'desc' => 'World-class parks, rides, character meet-and-greets, pool downtime.',
             ],
             [
@@ -388,7 +363,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1690,
                 'image' => 'https://media.bookmundi.com/aggregate-hero-images/italy/family-tour-packages/cropped.jpg',
-                'level' => 'Moderate',
                 'desc' => 'Shallow coves, gelato strolls, golden-hour photos.',
             ],
             [
@@ -401,7 +375,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.9,
                 'price' => 1250,
                 'image' => 'https://cdn.tourradar.com/s3/tour/750x400/204231_654c80233569b.jpg',
-                'level' => 'Easy',
                 'desc' => 'Feed deer in Nara, wander temple gardens and quiet lanes.',
             ],
             [
@@ -414,7 +387,6 @@ class ToursSeeder extends Seeder
                 'rating' => 4.8,
                 'price' => 1190,
                 'image' => 'https://veronicahanson.com/wp-content/uploads/2023/11/3-Best-Kept-Secret-Family-Vacation-Spots.jpg',
-                'level' => 'Easy',
                 'desc' => 'Play in gentle surf, boat ride to coves, family-friendly beach clubs.',
             ],
         ]);
