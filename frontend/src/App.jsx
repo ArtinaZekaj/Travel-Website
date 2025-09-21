@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MyAppointments from "./pages/MyAppointments";
 import TourDetail from "./pages/TourDetail";
+import NotificationsPage from "./components/NotificationsPage";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/appointments" element={<MyAppointments />} />
         <Route path="/tours/:id" element={<TourDetail />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
       </Routes>
     </Router>
   );

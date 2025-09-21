@@ -4,6 +4,7 @@ import "../styles/destination.css";
 import BookingModal from "../components/BookingModal";
 // import ReviewsSection from "../components/ReviewsSection";
 
+
 export default function DestinationPage() {
     const { code } = useParams();
     const navigate = useNavigate();
