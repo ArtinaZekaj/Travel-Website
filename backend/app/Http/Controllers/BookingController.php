@@ -51,7 +51,10 @@ class BookingController extends Controller
         ]);
 
         // 🔔 Dërgo eventin tek Pusher (opsional)
-        event(new NewBookingNotification("A new booking was created by {$validated['first_name']} {$validated['last_name']}"));
+        event(new NewBookingNotification(
+            (int) $booking->user_id,
+            "Your booking #{$booking->id} was successfully created!"
+        ));
 
         return response()->json([
             'message' => 'Booking created successfully',

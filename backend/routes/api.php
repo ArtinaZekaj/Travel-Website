@@ -32,7 +32,7 @@ Route::get('/destinations/{code}', [DestinationController::class, 'show']);
 // Offer Page
 Route::get('/offers/{slug}', [OfferController::class, 'show']);
 
-//Reviews:
+
 // Reviews – publik për të gjithë
 Route::get('/reviews', [ReviewController::class, 'index']);
 
@@ -47,7 +47,7 @@ Route::get('/tour-details/{id}', [TourDetailController::class, 'show']);
 Route::middleware('auth:api')->group(function () {
 
     Route::get('/me', [AuthController::class, 'me']);
-    
+
     //Bokkings Routes:
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::get('/bookings/my', [BookingController::class, 'myBookings']);
@@ -60,6 +60,5 @@ Route::middleware('auth:api')->group(function () {
     //Notifications:
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
-
     
 });

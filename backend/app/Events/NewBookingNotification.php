@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;   
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -12,29 +12,33 @@ class NewBookingNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public int $userId;
+    public string $message;
 
-    /**
-     * Konstruktori merr mesazhin që duam ta dërgojmë
-     */
-    public function __construct($message)
+    public function __construct(int $userId, string $message)
     {
+        $this->userId  = $userId;
         $this->message = $message;
     }
 
-    /**
-     * Kanali ku do transmetohet eventi
-     */
+    // dërgo tek kanali privat i user-it
     public function broadcastOn()
     {
-        return new Channel('travel-website-channel');
+        return new PrivateChannel('user.' . $this->userId);
     }
 
-    /**
-     * Emri i eventit që frontend do ta dëgjojë
-     */
+    // emri i eventit që do dëgjojë frontend-i
     public function broadcastAs()
     {
         return 'new-booking';
+    }
+
+    // payload që do marrë frontend-i
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message,
+            'user_id' => $this->userId,
+        ];
     }
 }
