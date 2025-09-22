@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/home.css";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
+import echo from "../lib/echo"; // Echo i konfiguruar me JWT auth
 
 export default function Header() {
   const { user, handleLogout } = useAuth();
@@ -9,13 +10,13 @@ export default function Header() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // 1. Merr njoftimet ekzistuese nga backend
   useEffect(() => {
     if (!user) return;
 
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    // Merr njoftimet nga backend
     fetch("http://127.0.0.1:8000/api/notifications", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -24,7 +25,6 @@ export default function Header() {
       .then((res) => res.json())
       .then((data) => {
         setNotifications(data);
-        // numëro vetëm ato që nuk janë lexuar
         const unread = data.filter((n) => !n.is_read).length;
         setUnreadCount(unread);
       })
@@ -32,6 +32,37 @@ export default function Header() {
         console.error("❌ Error fetching notifications:", err);
       });
   }, [user]);
+
+  // 2. Subscribe tek kanali privat i user-it
+  useEffect(() => {
+    if (!user) return;
+
+    const channelName = `user.${user.id}`;
+    const channel = echo.private(channelName);
+
+    channel.stopListening(".new-booking"); // hiq ndonjë listener të vjetër
+
+    channel.listen(".new-booking", (event) => {
+      console.log("📩 Event live:", event);
+
+      setNotifications((prev) => [
+        {
+          id: Date.now(),
+          type: "booking_created",
+          message: event.message,
+          is_read: false,
+          created_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
+      setUnreadCount((c) => c + 1);
+    });
+
+    return () => {
+      echo.leave(channelName);
+    };
+  }, [user]);
+
 
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
@@ -47,7 +78,6 @@ export default function Header() {
         },
       })
         .then(() => {
-          // vendos të gjitha si të lexuara
           const updated = notifications.map((n) => ({ ...n, is_read: true }));
           setNotifications(updated);
           setUnreadCount(0);
@@ -169,12 +199,9 @@ export default function Header() {
                       gap: "10px",
                     }}
                   >
-                    {/* Ikonë sipas tipit */}
                     <span style={{ fontSize: "18px" }}>
                       {n.type === "booking_created" ? "📌" : "🔔"}
                     </span>
-
-                    {/* Mesazhi */}
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: "500", fontSize: "13px", color: "#000" }}>
                         {n.message}
@@ -194,12 +221,8 @@ export default function Header() {
               </ul>
             )}
 
-            {/* Footer link */}
             <div style={{ textAlign: "center", marginTop: "8px" }}>
-              <Link
-                to="/notifications"
-                style={{ fontSize: "12px", color: "#007bff" }}
-              >
+              <Link to="/notifications" style={{ fontSize: "12px", color: "#007bff" }}>
                 View all notifications →
               </Link>
             </div>
