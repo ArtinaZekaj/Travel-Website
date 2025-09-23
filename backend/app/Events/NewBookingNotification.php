@@ -4,11 +4,11 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;   
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow; 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewBookingNotification implements ShouldBroadcast
+class NewBookingNotification implements ShouldBroadcastNow 
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,19 +21,16 @@ class NewBookingNotification implements ShouldBroadcast
         $this->message = $message;
     }
 
-    // dërgo tek kanali privat i user-it
     public function broadcastOn()
     {
         return new PrivateChannel('user.' . $this->userId);
     }
 
-    // emri i eventit që do dëgjojë frontend-i
     public function broadcastAs()
     {
         return 'new-booking';
     }
 
-    // payload që do marrë frontend-i
     public function broadcastWith(): array
     {
         return [

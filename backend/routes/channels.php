@@ -8,6 +8,7 @@ Broadcast::routes([
 ]);
 
 // Lejo vetëm user-in me atë ID të lidhet në kanalin e vet
+
 Broadcast::channel('user.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
