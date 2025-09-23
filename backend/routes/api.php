@@ -10,6 +10,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TourDetailController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 
 // -------- AUTH --------
 Route::post('/register', [AuthController::class, 'register']);
@@ -60,5 +61,9 @@ Route::middleware('auth:api')->group(function () {
     //Notifications:
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
+
+    //Payments:
+    Route::post('/create-payment-intent', [PaymentController::class, 'createPaymentIntent']);
+    Route::post('/payment/confirm', [PaymentController::class, 'confirmPayment']); 
     
 });
