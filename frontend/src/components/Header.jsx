@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/home.css";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
-import echo from "../lib/echo"; // Echo i konfiguruar me JWT auth
+import useEcho from "../lib/useEcho";
 
 export default function Header() {
   const { user, handleLogout } = useAuth();
@@ -10,12 +10,15 @@ export default function Header() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("access_token")
+      : null;
+  const echo = useEcho(token);
+
   // 1. Merr njoftimet ekzistuese nga backend
   useEffect(() => {
-    if (!user) return;
-
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
+    if (!user || !token) return;
 
     fetch("http://127.0.0.1:8000/api/notifications", {
       headers: {
@@ -25,51 +28,56 @@ export default function Header() {
       .then((res) => res.json())
       .then((data) => {
         setNotifications(data);
-        const unread = data.filter((n) => !n.is_read).length;
-        setUnreadCount(unread);
       })
       .catch((err) => {
         console.error("❌ Error fetching notifications:", err);
       });
-  }, [user]);
+  }, [user, token]);
 
-  // 2. Subscribe tek kanali privat i user-it
+  // 2. Subscribe tek kanali privat i user-it (Echo)
   useEffect(() => {
-    if (!user) return;
+    if (!user || !echo) return;
 
     const channelName = `user.${user.id}`;
     const channel = echo.private(channelName);
 
-    channel.stopListening(".new-booking"); // hiq ndonjë listener të vjetër
+    const handler = (event) => {
+      setNotifications((prev) => {
+        // 🚫 shmang duplikatat
+        const exists = prev.some((n) => n.message === event.message);
+        if (exists) return prev;
 
-    channel.listen(".new-booking", (event) => {
-      console.log("📩 Event live:", event);
+        return [
+          {
+            id: Date.now(),
+            type: "booking_created",
+            message: event.message,
+            is_read: false,
+            created_at: new Date().toISOString(),
+          },
+          ...prev,
+        ];
+      });
+    };
 
-      setNotifications((prev) => [
-        {
-          id: Date.now(),
-          type: "booking_created",
-          message: event.message,
-          is_read: false,
-          created_at: new Date().toISOString(),
-        },
-        ...prev,
-      ]);
-      setUnreadCount((c) => c + 1);
-    });
+    channel.listen(".new-booking", handler);
 
     return () => {
       echo.leave(channelName);
     };
-  }, [user]);
+  }, [user, echo]);
 
+  // 3. Llogarit unread count automatikisht
+  useEffect(() => {
+    const unread = notifications.filter((n) => !n.is_read).length;
+    setUnreadCount(unread);
+  }, [notifications]);
 
+  // Toggle & mark-as-read
   const toggleNotifications = () => {
     setShowNotifications(!showNotifications);
 
     if (!showNotifications && unreadCount > 0) {
-      const token = localStorage.getItem("access_token");
-
       fetch("http://127.0.0.1:8000/api/notifications/mark-as-read", {
         method: "POST",
         headers: {
@@ -78,7 +86,10 @@ export default function Header() {
         },
       })
         .then(() => {
-          const updated = notifications.map((n) => ({ ...n, is_read: true }));
+          const updated = notifications.map((n) => ({
+            ...n,
+            is_read: true,
+          }));
           setNotifications(updated);
           setUnreadCount(0);
         })
@@ -100,12 +111,24 @@ export default function Header() {
 
       <nav className="nav-center">
         <ul>
-          <li className="active"><a href="/#home">Home</a></li>
-          <li><a href="/#tour">Categories</a></li>
-          <li><a href="/#top-destinations">Destinations</a></li>
-          <li><a href="/#why-us">About</a></li>
-          <li><a href="/#offers">Offers</a></li>
-          <li><a href="/#reviews">Reviews</a></li>
+          <li className="active">
+            <a href="/#home">Home</a>
+          </li>
+          <li>
+            <a href="/#tour">Categories</a>
+          </li>
+          <li>
+            <a href="/#top-destinations">Destinations</a>
+          </li>
+          <li>
+            <a href="/#why-us">About</a>
+          </li>
+          <li>
+            <a href="/#offers">Offers</a>
+          </li>
+          <li>
+            <a href="/#reviews">Reviews</a>
+          </li>
           {user && (
             <li>
               <Link to="/appointments">My Appointments</Link>
@@ -182,7 +205,13 @@ export default function Header() {
             </h6>
 
             {notifications.length === 0 ? (
-              <p style={{ fontSize: "13px", color: "#888", textAlign: "center" }}>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#888",
+                  textAlign: "center",
+                }}
+              >
                 No notifications yet ✨
               </p>
             ) : (
@@ -203,7 +232,13 @@ export default function Header() {
                       {n.type === "booking_created" ? "📌" : "🔔"}
                     </span>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: "500", fontSize: "13px", color: "#000" }}>
+                      <div
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "13px",
+                          color: "#000",
+                        }}
+                      >
                         {n.message}
                       </div>
                       <div
@@ -222,7 +257,10 @@ export default function Header() {
             )}
 
             <div style={{ textAlign: "center", marginTop: "8px" }}>
-              <Link to="/notifications" style={{ fontSize: "12px", color: "#007bff" }}>
+              <Link
+                to="/notifications"
+                style={{ fontSize: "12px", color: "#007bff" }}
+              >
                 View all notifications →
               </Link>
             </div>

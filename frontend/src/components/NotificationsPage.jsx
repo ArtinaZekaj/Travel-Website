@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import echo from "../lib/echo"; // importo Echo
+import { useAuth } from "../context/AuthContext";
+import useEcho from "../lib/useEcho";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
+  const { user } = useAuth();
+  const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+  const echo = useEcho(token);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Fetch fillestar nga backend
   useEffect(() => {
@@ -10,25 +15,23 @@ export default function NotificationsPage() {
     if (!token) return;
 
     fetch("http://127.0.0.1:8000/api/notifications", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setNotifications(data))
       .catch((err) => console.error("❌ Error:", err));
   }, []);
 
-  // Dëgjo për evente të reja live
   useEffect(() => {
-    const channel = echo.channel("travel-website-channel");
+    if (!user || !echo) return;
 
-    channel.listen(".new-booking", (event) => {
-      console.log("📩 Event i ri (NotificationsPage):", event);
+    const channelName = `user.${user.id}`;
+    const channel = echo.private(channelName);
 
+    const handler = (event) => {
       setNotifications((prev) => [
         {
-          id: Date.now(), // id e përkohshme
+          id: Date.now(),
           type: "booking_created",
           message: event.message,
           is_read: false,
@@ -36,12 +39,20 @@ export default function NotificationsPage() {
         },
         ...prev,
       ]);
-    });
+    };
+
+
+    channel.listen(".new-booking", handler);
 
     return () => {
-      echo.leave("travel-website-channel");
+      echo.leave(channelName);
     };
-  }, []);
+  }, [user, echo]);
+
+  useEffect(() => {
+    const unread = notifications.filter((n) => !n.is_read).length;
+    setUnreadCount(unread);
+  }, [notifications]);
 
   return (
     <div

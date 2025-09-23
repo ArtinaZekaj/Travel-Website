@@ -7,10 +7,25 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    async function fetchUser() {
-      const data = await me();
-      setUser(data);
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      // s’ka token → mos thirr /api/me
+      return;
     }
+
+    async function fetchUser() {
+      try {
+        const data = await me();
+        setUser(data);
+      } catch (error) {
+        console.error("❌ Auth check failed:", error);
+        // nëse token është invalid, pastro user-in
+        setUser(null);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+      }
+    }
+
     fetchUser();
   }, []);
 
