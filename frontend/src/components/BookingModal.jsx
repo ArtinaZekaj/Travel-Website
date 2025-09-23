@@ -16,7 +16,11 @@ export default function BookingModal({ show, onClose, item, itemType }) {
         preferredDate: "",
     });
 
-    const [feedback, setFeedback] = useState({ show: false, type: "", message: "" });
+    const [feedback, setFeedback] = useState({
+        show: false,
+        type: "",
+        message: "",
+    });
 
     if (!show || !item) return null;
 
@@ -24,7 +28,10 @@ export default function BookingModal({ show, onClose, item, itemType }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -40,7 +47,7 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, // ✅ fix string interpolation
                 },
                 body: JSON.stringify({
                     destination_id: item.destination_id || null,
@@ -58,7 +65,7 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                     guests: formData.guests,
                     preferred_date: formData.preferredDate,
                     days: formData.days,
-                })
+                }),
             });
 
             if (!res.ok) {
@@ -75,7 +82,7 @@ export default function BookingModal({ show, onClose, item, itemType }) {
             setFeedback({
                 show: true,
                 type: "success",
-                message: `Booking confirmed! Thank you, ${data.booking.first_name}.`,
+                message: `Booking confirmed! Thank you, ${data.booking.first_name}.`, // ✅ template literal
             });
         } catch (err) {
             setFeedback({
@@ -101,9 +108,9 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                             </h5>
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         </div>
-
                         <div className="modal-body">
                             <form className="row g-3" onSubmit={handleSubmit}>
+                                {/* Inputs */}
                                 <div className="col-md-6">
                                     <label className="form-label small">First Name</label>
                                     <input
@@ -115,7 +122,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         required
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Last Name</label>
                                     <input
@@ -127,7 +133,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         required
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Email</label>
                                     <input
@@ -139,7 +144,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         required
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Phone</label>
                                     <input
@@ -151,7 +155,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         required
                                     />
                                 </div>
-
                                 <div className="col-12">
                                     <label className="form-label small">Address</label>
                                     <input
@@ -162,7 +165,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         className="form-control rounded-3"
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Passport / ID Number</label>
                                     <input
@@ -173,7 +175,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         className="form-control rounded-3"
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Date of Birth</label>
                                     <input
@@ -184,7 +185,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         className="form-control rounded-3"
                                     />
                                 </div>
-
                                 <div className="col-md-6">
                                     <label className="form-label small">Preferred Date</label>
                                     <input
@@ -195,7 +195,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         className="form-control rounded-3"
                                     />
                                 </div>
-
                                 <div className="col-md-3">
                                     <label className="form-label small">Guests</label>
                                     <input
@@ -207,7 +206,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         min="1"
                                     />
                                 </div>
-
                                 <div className="col-md-3">
                                     <label className="form-label small">Days</label>
                                     <input
@@ -219,7 +217,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         min="1"
                                     />
                                 </div>
-
                                 <div className="col-12">
                                     <label className="form-label small">Special Requests</label>
                                     <textarea
@@ -230,7 +227,6 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                         rows="2"
                                     />
                                 </div>
-
                                 <div className="col-12">
                                     <label className="form-label small">Travel Details</label>
                                     <textarea
@@ -242,6 +238,7 @@ export default function BookingModal({ show, onClose, item, itemType }) {
                                     />
                                 </div>
 
+                                {/* Footer */}
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" onClick={onClose}>
                                         Close
@@ -259,15 +256,39 @@ export default function BookingModal({ show, onClose, item, itemType }) {
             {/* FEEDBACK MESSAGE */}
             {feedback.show && (
                 <div
-                    className="position-fixed top-50 start-50 translate-middle bg-white shadow-lg rounded-4 p-4 text-center"
-                    style={{ zIndex: 2000 }}
+                    className="position-fixed top-50 start-50 translate-middle bg-white shadow-lg rounded-4 p-5 text-center"
+                    style={{ zIndex: 2000, width: "420px" }}
                 >
-                    <h5 className={feedback.type === "success" ? "text-success" : "text-danger"}>
-                        {feedback.message}
-                    </h5>
-                    <button className="btn btn-dark mt-3" onClick={() => setFeedback({ show: false })}>
-                        OK
-                    </button>
+                    {/* Ikona + Mesazhi */}
+                    <h4 className={feedback.type === "success" ? "text-success fw-bold mb-3" : "text-danger fw-bold mb-3"}>
+                        {feedback.type === "success" ? "🎉 Booking Confirmed!" : "❌ Error"}
+                    </h4>
+                    <p className="mb-4">{feedback.message}</p>
+
+                    {/* Butonat */}
+                    <div className="d-flex justify-content-center gap-3">
+                        {feedback.type === "success" && (
+                            <button
+                                className="btn btn-success px-4"
+                                onClick={() => {
+                                    onClose();
+                                    window.dispatchEvent(
+                                        new CustomEvent("openPayment", {
+                                            detail: { amount: item.price }
+                                        })
+                                    );
+                                }}
+                            >
+                                Proceed to Payment
+                            </button>
+                        )}
+                        <button
+                            className="btn btn-outline-dark px-4"
+                            onClick={() => setFeedback({ show: false })}
+                        >
+                            {feedback.type === "success" ? "Later" : "OK"}
+                        </button>
+                    </div>
                 </div>
             )}
         </>
